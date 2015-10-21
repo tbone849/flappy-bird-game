@@ -12,7 +12,7 @@ GraphicsSystem.prototype.run = function() {
 GraphicsSystem.prototype.tick = function() {
     for (var i=0; i<this.entities.length; i++) {
         var entity = this.entities[i];
-        if (!'graphics' in entity.components) {
+        if (!('graphics' in entity.components)) {
             continue;
         }
 
