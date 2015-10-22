@@ -32,7 +32,7 @@ gulp.task('scripts', function() {
 
 // Concat and minify all scss files 
 gulp.task('styles', function(){
-	return gulp.src('./scss/**/*.scss')
+	return gulp.src('./scss/*.scss')
 	.pipe(sass())
 	.pipe(concat('styles.css'))
 	.pipe(minifyCss())
@@ -56,7 +56,7 @@ gulp.task('html', function(){
 // Watch for files changes
 gulp.task('watch', ['build'], function(){
 	gulp.watch('index.html', ['build'] );
-  	gulp.watch('js/*.js', ['build']);
+  	gulp.watch('js/**/*.js', ['build']);
   	gulp.watch('scss/*.scss', ['build']);
   	gulp.watch('img/*', ['images']);
 });
