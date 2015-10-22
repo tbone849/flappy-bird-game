@@ -21,8 +21,6 @@ GraphicsSystem.prototype.tick = function() {
         this.canvas.height = this.canvas.offsetHeight;
     }
 
-    console.log(this.canvas.width);
-
     // Clear the canvas
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
