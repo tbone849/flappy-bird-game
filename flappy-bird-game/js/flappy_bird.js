@@ -16,10 +16,10 @@ FlappyBird.prototype.run = function() {
     this.graphics.run();
     this.physics.run();
     this.input.run();
-    var self = this;
+    
     window.setInterval(function(){
-    	self.entities.push(new pipe.Pipe());
-    }, 2000);
+    	this.entities.push(new pipe.Pipe());
+    }.bind(this), 2000);
 };
 
 module.exports = FlappyBird;
