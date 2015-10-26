@@ -6,6 +6,7 @@ var pipe = require('./entities/pipe');
 
 var FlappyBird = function() {
     this.entities = [new bird.Bird(), new pipe.Pipe()];
+
     this.graphics = new graphicsSystem.GraphicsSystem(this.entities);
     this.physics = new physicsSystem.PhysicsSystem(this.entities);
     this.input = new inputSystem.InputSystem(this.entities);
@@ -15,6 +16,10 @@ FlappyBird.prototype.run = function() {
     this.graphics.run();
     this.physics.run();
     this.input.run();
+    var self = this;
+    window.setInterval(function(){
+    	self.entities.push(new pipe.Pipe());
+    }, 2000);
 };
 
 module.exports = FlappyBird;
