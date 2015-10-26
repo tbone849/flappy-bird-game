@@ -9,7 +9,10 @@ PipeGraphicsComponent.prototype.draw = function(context) {
 	context.translate(position.x, position.y);
 	context.beginPath();
 	context.fillStyle = 'green';
-	context.fillRect(0, 0, 0.1, 1);
+	context.fillRect(0, 0, 0.1, 0.5);
+	context.closePath();
+	context.beginPath();
+	context.fillRect(0, 1, 0.1, -0.35);
 	context.closePath();
 	context.restore();
 
