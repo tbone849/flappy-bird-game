@@ -1,5 +1,5 @@
-var InputSystem = function(entities) {
-    this.entities = entities;
+var InputSystem = function(birdEntity) {
+    this.birdEntity = birdEntity;
 
     // Canvas is where we get input from
     this.canvas = document.getElementById('main-canvas');
@@ -11,8 +11,7 @@ InputSystem.prototype.run = function() {
 };
 
 InputSystem.prototype.onClick = function() {
-    var bird = this.entities[0];
-    bird.components.physics.velocity.y = 0.6;
+    this.birdEntity.components.physics.velocity.y = 0.6;
 };
 
 exports.InputSystem = InputSystem;

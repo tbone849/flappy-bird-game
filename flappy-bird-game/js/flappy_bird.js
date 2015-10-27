@@ -9,7 +9,7 @@ var FlappyBird = function() {
 
     this.graphics = new graphicsSystem.GraphicsSystem(this.entities);
     this.physics = new physicsSystem.PhysicsSystem(this.entities);
-    this.input = new inputSystem.InputSystem(this.entities);
+    this.input = new inputSystem.InputSystem(this.entities[0]);
 };
 
 FlappyBird.prototype.run = function() {
