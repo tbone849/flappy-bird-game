@@ -5,7 +5,7 @@ var bird = require('./entities/bird');
 var pipe = require('./entities/pipe');
 
 var FlappyBird = function() {
-    this.entities = [new bird.Bird(), new pipe.Pipe()];
+    this.entities = [new bird.Bird()];
 
     this.graphics = new graphicsSystem.GraphicsSystem(this.entities);
     this.physics = new physicsSystem.PhysicsSystem(this.entities);
@@ -18,7 +18,12 @@ FlappyBird.prototype.run = function() {
     this.input.run();
     
     window.setInterval(function(){
-    	this.entities.push(new pipe.Pipe());
+        var min = 0.2;
+        var max = 0.8;
+        // calculate random height of lower pipe
+        var y = Math.random() * (max - min) + min;
+    	this.entities.push(new pipe.Pipe(y, true));
+        this.entities.push(new pipe.Pipe(y, false));
     }.bind(this), 2000);
 };
 
