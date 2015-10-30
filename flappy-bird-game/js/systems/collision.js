@@ -26,7 +26,7 @@ CollisionSystem.prototype.tick = function() {
             }
 
             if (entityB.components.collision.onCollision) {
-                entityB.components.collision.onCollision(entityA);
+                entityB.components.collision.onCollision(entityA, this.entities);
             }
         }
     }

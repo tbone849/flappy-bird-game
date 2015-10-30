@@ -215,7 +215,7 @@ Bird.prototype.onCollision = function(entity) {
     this.components.physics.position.y = 0.5;
     this.components.physics.acceleration.y = 0;
     this.components.physics.velocity.y = 0;
-    console.log(this.components.physics.acceleration.y);
+    
 };
 
 exports.Bird = Bird;
@@ -226,6 +226,8 @@ var collisionComponent = require("../components/collision/rect");
 
 var Pipe = function(y, isBottom) {
 	this.isBottom = isBottom;
+
+	this.type = "pipe";
 
 	var physics = new physicsComponent.PhysicsComponent(this);
 	physics.position.x = 1;
@@ -251,8 +253,16 @@ var Pipe = function(y, isBottom) {
 	};
 };
 
-Pipe.prototype.onCollision = function(entity) {
+Pipe.prototype.onCollision = function(entity, entities) {
     console.log("Pipe collided with entity:", entity);
+    for(i = 0; i < entities.length; i++){
+    	console.log(entities[i]);
+    	if(entities[i].type == "pipe"){
+    		entities.splice(i, 1);
+    	}
+    }
+    // HOW DO I GET THIS METHOD TO COMMUNICATE WITH FLAPPY BIRD TO STOP
+    // RUNNING PHYSICS, INPUT, AND PIPE CREATION?
 };
 
 exports.Pipe = Pipe;
@@ -325,7 +335,7 @@ CollisionSystem.prototype.tick = function() {
             }
 
             if (entityB.components.collision.onCollision) {
-                entityB.components.collision.onCollision(entityA);
+                entityB.components.collision.onCollision(entityA, this.entities);
             }
         }
     }
