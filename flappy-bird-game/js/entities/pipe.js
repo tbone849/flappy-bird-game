@@ -2,8 +2,9 @@ var graphicsComponent = require("../components/graphics/pipe");
 var physicsComponent = require("../components/physics/physics");
 var collisionComponent = require("../components/collision/rect"); 
 
-var Pipe = function(y, isBottom) {
+var Pipe = function(y, isBottom, onCollide) {
 	this.isBottom = isBottom;
+	this.onCollide = onCollide;
 
 	this.type = "pipe";
 
@@ -33,14 +34,7 @@ var Pipe = function(y, isBottom) {
 
 Pipe.prototype.onCollision = function(entity, entities) {
     console.log("Pipe collided with entity:", entity);
-    for(i = 0; i < entities.length; i++){
-    	console.log(entities[i]);
-    	if(entities[i].type == "pipe"){
-    		entities.splice(i, 1);
-    	}
-    }
-    // HOW DO I GET THIS METHOD TO COMMUNICATE WITH FLAPPY BIRD TO STOP
-    // RUNNING PHYSICS, INPUT, AND PIPE CREATION?
+    this.onCollide();
 };
 
 exports.Pipe = Pipe;

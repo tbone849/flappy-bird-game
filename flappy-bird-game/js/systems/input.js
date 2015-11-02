@@ -1,6 +1,6 @@
 var InputSystem = function(birdEntity) {
     this.birdEntity = birdEntity;
-
+    this.active = true;
     // Canvas is where we get input from
     this.canvas = document.getElementById('main-canvas');
 };
@@ -11,7 +11,9 @@ InputSystem.prototype.run = function() {
 };
 
 InputSystem.prototype.onClick = function() {
-    this.birdEntity.components.physics.velocity.y = 0.6;
+	if(this.active){
+		this.birdEntity.components.physics.velocity.y = 0.6;
+	}
 };
 
 exports.InputSystem = InputSystem;

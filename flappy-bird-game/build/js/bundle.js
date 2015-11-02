@@ -193,6 +193,7 @@ var collisionComponent = require("../components/collision/circle");
 
 
 var Bird = function() {
+    this.isColliding = false;
     var physics = new physicsComponent.PhysicsComponent(this);
     physics.position.y = 0.5;
     physics.acceleration.y = -2;
@@ -211,7 +212,7 @@ var Bird = function() {
 
 Bird.prototype.onCollision = function(entity) {
     console.log("Bird collided with entity:", entity);
-
+    this.isColliding = true;
     this.components.physics.position.y = 0.5;
     this.components.physics.acceleration.y = 0;
     this.components.physics.velocity.y = 0;
@@ -224,8 +225,9 @@ var graphicsComponent = require("../components/graphics/pipe");
 var physicsComponent = require("../components/physics/physics");
 var collisionComponent = require("../components/collision/rect"); 
 
-var Pipe = function(y, isBottom) {
+var Pipe = function(y, isBottom, onCollide) {
 	this.isBottom = isBottom;
+	this.onCollide = onCollide;
 
 	this.type = "pipe";
 
@@ -255,14 +257,7 @@ var Pipe = function(y, isBottom) {
 
 Pipe.prototype.onCollision = function(entity, entities) {
     console.log("Pipe collided with entity:", entity);
-    for(i = 0; i < entities.length; i++){
-    	console.log(entities[i]);
-    	if(entities[i].type == "pipe"){
-    		entities.splice(i, 1);
-    	}
-    }
-    // HOW DO I GET THIS METHOD TO COMMUNICATE WITH FLAPPY BIRD TO STOP
-    // RUNNING PHYSICS, INPUT, AND PIPE CREATION?
+    this.onCollide();
 };
 
 exports.Pipe = Pipe;
@@ -286,14 +281,25 @@ FlappyBird.prototype.run = function() {
     this.physics.run();
     this.input.run();
     
-    window.setInterval(function(){
+    this.timer = window.setInterval(function(){
         var min = 0.2;
         var max = 0.8;
         // calculate random height of lower pipe
         var y = Math.random() * (max - min) + min;
-    	this.entities.push(new pipe.Pipe(y, true));
-        this.entities.push(new pipe.Pipe(y, false));
+    	this.entities.push(new pipe.Pipe(y, true, this.onCollide.bind(this)));
+        this.entities.push(new pipe.Pipe(y, false, this.onCollide.bind(this)));
     }.bind(this), 2000);
+};
+
+FlappyBird.prototype.onCollide = function(){
+    window.clearInterval(this.timer);
+    for(i = 0; i < this.entities.length; i++){
+        if(this.entities[i].type == "pipe"){
+            this.entities.splice(i, 1);
+            i--;
+        }
+    }
+    this.input.active = false;
 };
 
 module.exports = FlappyBird;
@@ -390,7 +396,7 @@ exports.GraphicsSystem = GraphicsSystem;
 },{}],12:[function(require,module,exports){
 var InputSystem = function(birdEntity) {
     this.birdEntity = birdEntity;
-
+    this.active = true;
     // Canvas is where we get input from
     this.canvas = document.getElementById('main-canvas');
 };
@@ -401,7 +407,9 @@ InputSystem.prototype.run = function() {
 };
 
 InputSystem.prototype.onClick = function() {
-    this.birdEntity.components.physics.velocity.y = 0.6;
+	if(this.active){
+		this.birdEntity.components.physics.velocity.y = 0.6;
+	}
 };
 
 exports.InputSystem = InputSystem;
